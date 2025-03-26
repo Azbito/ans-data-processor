@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "🚀 Verifying code before pushing..."
+
+echo "⚙️ Running API test..."
+cd api && pytest || exit 1
+cd ..
+
+echo "✅ Success!"

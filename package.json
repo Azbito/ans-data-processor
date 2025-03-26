@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "prepare": "husky",
+    "test:backend": "docker-compose exec api pytest",
+    "test:frontend": "docker-compose exec frontend npm test"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  },
+  "name": "ans-data-processor",
+  "version": "1.0.0",
+  "main": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

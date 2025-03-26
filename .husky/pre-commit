@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "🔍 Analyzing code..."
+
+echo "[FRONTEND] 🛠️ Running ESLint..."
+cd frontend && npm run lint || exit 1
+cd ..
+
+echo "[BACKEND] 🐍 Running Flake8..."
+cd api && flake8 . || exit 1
+cd ..
+
+echo "[DOCKER] 🐳 Verificando Docker Compose..."
+docker-compose config || exit 1
+
+echo "✅ Commit allowed!"
