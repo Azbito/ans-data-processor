@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:latest
@@ -15,7 +13,7 @@ services:
       - "5432:5432"
 
   api:
-    build: ./api
+    build: ./apps/api
     container_name: fastapi_server
     restart: always
     depends_on:
@@ -26,13 +24,15 @@ services:
       DATABASE_URL: postgresql://user:password@db:5432/ans_db
 
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
     container_name: vue_frontend
     restart: always
     depends_on:
       - api
     ports:
-      - "3000:3000"
+      - "5173:5173"
 
 volumes:
   pgdata:

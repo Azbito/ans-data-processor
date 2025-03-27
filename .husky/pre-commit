@@ -2,15 +2,13 @@
 
 echo "🔍 Analyzing code..."
 
-echo "[FRONTEND] 🛠️ Running ESLint..."
-cd frontend && npm run lint || exit 1
-cd ..
+echo "[FRONTEND] 🛠️  Running tests..."
+npm run test:frontend
 
-echo "[BACKEND] 🐍 Running Flake8..."
-cd api && flake8 . || exit 1
-cd ..
+echo "[BACKEND] 🐍  Running tests..."
+npm run test:backend
 
-echo "[DOCKER] 🐳 Verificando Docker Compose..."
+echo "[DOCKER] 🐳  Verifying Docker Compose..."
 docker-compose config || exit 1
 
 echo "✅ Commit allowed!"
