@@ -1,5 +1,6 @@
-fastapi
+requests
+beautifulsoup4
+boto3
+python-dotenv
 uvicorn
-sqlalchemy
-psycopg2-binary
-pytest
+fastapi
