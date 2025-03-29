@@ -9,3 +9,4 @@ pytest
 pdfplumber
 mypy
 pytest-mock
+httpx

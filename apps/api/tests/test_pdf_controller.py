@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from fastapi import HTTPException
-from controllers.PDFController import ANSPDFController
+from controllers.PDFController import PDFController
 from fastapi.responses import JSONResponse
 
 
@@ -13,7 +13,7 @@ def controller():
         "controllers.PDFController.PDFService"
     ) as mock_pdf:
 
-        controller = ANSPDFController()
+        controller = PDFController()
         controller.r2_service = mock_r2.return_value
         controller.zip_service = mock_zip.return_value
         controller.csv_service = mock_csv.return_value

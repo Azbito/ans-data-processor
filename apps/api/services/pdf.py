@@ -55,7 +55,7 @@ class PDFService:
                     os.remove(file_path)
 
             if os.path.exists(zip_file_path):
-                os.remove(zip_file_path)
+                self.zip_service.cleanup_temp_files(None, zip_file_path)
 
     def extract_tables(self, target_file: str, extension: str) -> str:
         extract_dir = "/tmp/extracted_pdfs"
@@ -106,19 +106,10 @@ class PDFService:
             return file_from_r2
 
         finally:
-            files_to_cleanup = [csv_file_name, zip_file_path]
-            for path in files_to_cleanup:
-                if path and os.path.exists(path):
-                    os.remove(path)
+            self.zip_service.cleanup_temp_files(extract_dir, zip_file_path)
 
-            if os.path.exists(extract_dir):
-                for root, dirs, files in os.walk(extract_dir, topdown=False):
-                    for name in files:
-                        os.remove(os.path.join(root, name))
-                    for name in dirs:
-                        os.rmdir(os.path.join(root, name))
-
-                os.rmdir(extract_dir)
+            if csv_file_name and os.path.exists(csv_file_name):
+                os.remove(csv_file_name)
 
     @staticmethod
     def replace_abbreviations_in_header(header: List[str]) -> None:
