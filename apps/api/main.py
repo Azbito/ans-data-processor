@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from endpoints import pdf
+from routes import pdf
 
 app = FastAPI()
 

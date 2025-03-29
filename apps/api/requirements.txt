@@ -6,3 +6,6 @@ uvicorn
 fastapi
 py-mon
 pytest
+pdfplumber
+mypy
+pytest-mock
