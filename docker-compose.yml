@@ -15,8 +15,8 @@ services:
 
   api:
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/api/Dockerfile
     container_name: fastapi_server
     restart: always
     depends_on:
@@ -30,18 +30,19 @@ services:
       - ./apps/api:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: apps/frontend/Dockerfile
-  #   container_name: vue_frontend
-  #   restart: always
-  #   depends_on:
-  #     - api
-  #   ports:
-  #     - "5173:5173"
-  #   volumes:
-  #     - ./apps/frontend:/app/frontend
+  frontend:
+    build: ./apps/frontend
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./apps/frontend:/app/frontend
+      - /app/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_HMR_PORT=5173
+    command: npm run dev -- --host 0.0.0.0
 
 volumes:
   pgdata:

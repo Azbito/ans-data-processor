@@ -18,6 +18,6 @@ def get_pdf_links(target_url: str):
     ]
 
     if not pdf_links:
-        raise Exception(f"Nenhum link para PDF encontrado em {target_url}")
+        raise Exception(f"There's no PDF URL for: {target_url}")
 
     return pdf_links
