@@ -9,11 +9,14 @@ services:
       POSTGRES_DB: ans_db
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./apps/api:/app/api
     ports:
       - "5432:5432"
 
   api:
-    build: ./apps/api
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
     container_name: fastapi_server
     restart: always
     depends_on:
@@ -22,17 +25,23 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://user:password@db:5432/ans_db
+      FASTAPI_ENV: development
+    volumes:
+      - ./apps/api:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
-  frontend:
-    build:
-      context: .
-      dockerfile: apps/frontend/Dockerfile
-    container_name: vue_frontend
-    restart: always
-    depends_on:
-      - api
-    ports:
-      - "5173:5173"
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/frontend/Dockerfile
+  #   container_name: vue_frontend
+  #   restart: always
+  #   depends_on:
+  #     - api
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ./apps/frontend:/app/frontend
 
 volumes:
   pgdata:

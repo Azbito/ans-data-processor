@@ -8,4 +8,4 @@ app.include_router(pdf.router)
 
 @app.get("/ping")
 def read_root():
-    return {"message": "pong"}
+    return {"message": "ping"}
