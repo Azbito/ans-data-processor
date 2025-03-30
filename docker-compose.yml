@@ -1,17 +1,25 @@
+version: "3.8"
+
 services:
   db:
     image: postgres:latest
     container_name: postgres_db
     restart: always
+    env_file: .env
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: ans_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./apps/api:/app/api
+      - ./apps/database:/app/database
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build:
@@ -20,13 +28,17 @@ services:
     container_name: fastapi_server
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8000:8000"
+    env_file: .env
     environment:
-      DATABASE_URL: postgresql://user:password@db:5432/ans_db
-      FASTAPI_ENV: development
-      PYTHONPATH: /app
+      FASTAPI_ENV: ${FASTAPI_ENV}
+      PYTHONPATH: ${PYTHONPATH}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME} 
     volumes:
       - ./apps/api:/app
 
@@ -38,10 +50,11 @@ services:
     volumes:
       - ./apps/frontend:/app/frontend
       - /app/frontend/node_modules
+    env_file: .env
     environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-      - VITE_HMR_PORT=5173
+      - NODE_ENV=${NODE_ENV}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
+      - VITE_HMR_PORT=${VITE_HMR_PORT}
     command: npm run dev -- --host 0.0.0.0
 
 volumes:

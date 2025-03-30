@@ -1,8 +1,13 @@
 from fastapi import APIRouter
-from controllers.PDFController import PDFController
+from controllers.pdf import PDFController
 
 router = APIRouter()
 pdf_controller = PDFController()
 
-router.get("/pdf/ans")(pdf_controller.ans_pdf_scrapper)
-router.get("/pdf/embed_ans_pdf")(pdf_controller.get_ans_pdf)
+@router.get("/pdf/ans")
+async def ans_pdf_scrapper(target_url: str):
+    return pdf_controller.ans_pdf_scrapper(target_url)
+
+@router.get("/pdf/embed_ans_pdf")
+async def get_ans_pdf(target_url: str, target_file: str):
+    return pdf_controller.get_ans_pdf(target_url, target_file)

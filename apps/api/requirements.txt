@@ -10,3 +10,6 @@ pdfplumber
 mypy
 pytest-mock
 httpx
+psycopg2
+pandas
+python-multipart

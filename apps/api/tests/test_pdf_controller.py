@@ -1,16 +1,19 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from fastapi import HTTPException
-from controllers.PDFController import PDFController
+from controllers.pdf import PDFController
 from fastapi.responses import JSONResponse
-
+from services.r2 import R2Service
+from services.zip import ZIPService
+from services.csv import CSVService
+from services.pdf import PDFService
 
 @pytest.fixture
 def controller():
-    with patch("controllers.PDFController.R2Service") as mock_r2, patch(
-        "controllers.PDFController.ZIPService"
-    ) as mock_zip, patch("controllers.PDFController.CSVService") as mock_csv, patch(
-        "controllers.PDFController.PDFService"
+    with patch("controllers.pdf.R2Service") as mock_r2, patch(
+        "controllers.pdf.ZIPService"
+    ) as mock_zip, patch("controllers.pdf.CSVService") as mock_csv, patch(
+        "controllers.pdf.PDFService"
     ) as mock_pdf:
 
         controller = PDFController()
