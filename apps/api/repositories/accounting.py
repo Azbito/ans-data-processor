@@ -5,7 +5,9 @@ from .database import DatabaseRepository
 from psycopg2.extras import execute_values
 import base64
 import json
-
+from datetime import datetime, date
+from decimal import Decimal
+from utils.json_encoder import JSONEncoder
 
 class AccountingRepository:
     TABLE_NAME = "accountings"
@@ -14,6 +16,7 @@ class AccountingRepository:
     def create_table(cls):
         db_connection = None
         cursor = None
+        
         try:
             db_connection = DatabaseRepository.get_connection()
             cursor = db_connection.cursor()
@@ -42,11 +45,12 @@ class AccountingRepository:
     @classmethod
     def _encode_cursor(cls, last_item: AccountingEntry) -> str:
         cursor_data = {
-            "data": last_item.data.isoformat(),
+            "data": last_item.data.isoformat() if isinstance(last_item.data, (datetime, date)) else str(last_item.data), 
             "reg_ans": str(last_item.reg_ans),  
             "cd_conta_contabil": last_item.cd_conta_contabil
         }
-        return base64.b64encode(json.dumps(cursor_data).encode()).decode()
+        return base64.b64encode(json.dumps(cursor_data, cls=JSONEncoder).encode()).decode()
+
 
     @classmethod
     def _decode_cursor(cls, cursor: str) -> dict:

@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 from typing import List, Optional
 import pandas as pd
 import io
-from datetime import datetime
+from datetime import datetime, date
+from decimal import Decimal
 from models.accounting import AccountingEntry
 from repositories.accounting import AccountingRepository
 from repositories.database import DatabaseRepository
@@ -22,8 +23,8 @@ class AccountingController:
                 return JSONResponse(content={
                     "data": [
                         {
-                            **entry.dict(),
-                            'data': entry.data.isoformat() if entry.data else None,
+                            **entry.dict(exclude_unset=True),
+                            'data': entry.data.isoformat() if isinstance(entry.data, (date, datetime)) else str(entry.data),
                             'vl_saldo_inicial': float(entry.vl_saldo_inicial) if entry.vl_saldo_inicial else None,
                             'vl_saldo_final': float(entry.vl_saldo_final) if entry.vl_saldo_final else None
                         }
@@ -48,8 +49,8 @@ class AccountingController:
                 db_connection.commit()
                 return JSONResponse(content=[
                     {
-                        **entry.dict(),
-                        'data': entry.data.isoformat() if entry.data else None,
+                        **entry.dict(exclude_unset=True),
+                        'data': entry.data.isoformat() if isinstance(entry.data, (date, datetime)) else str(entry.data),
                         'vl_saldo_inicial': float(entry.vl_saldo_inicial) if entry.vl_saldo_inicial else None,
                         'vl_saldo_final': float(entry.vl_saldo_final) if entry.vl_saldo_final else None
                     }
@@ -66,38 +67,33 @@ class AccountingController:
     @staticmethod
     async def import_accounting(file: UploadFile) -> JSONResponse:
         try:
-            db_connection = DatabaseRepository.get_connection()
-            try:
-                content = await file.read()
-                
-                data_frame = pd.read_csv(
-                    io.BytesIO(content),
-                    sep=";",
-                    encoding="utf-8",
-                    decimal=",",
-                    parse_dates=["DATA"]
+            content = await file.read()
+            
+            data_frame = pd.read_csv(
+                io.StringIO(content.decode()),
+                sep=';',
+                decimal=',',
+                thousands='.'
+            )
+
+            entries = []
+            for _, row in data_frame.iterrows():
+                entry = AccountingEntry(
+                    data=row['data'],
+                    reg_ans=str(row['reg_ans']),
+                    cd_conta_contabil=row['cd_conta_contabil'],
+                    descricao=row['descricao'],
+                    vl_saldo_inicial=Decimal(str(row['vl_saldo_inicial'])),
+                    vl_saldo_final=Decimal(str(row['vl_saldo_final']))
                 )
+                entries.append(entry)
 
-                column_mapping = {
-                    "DATA": "data",
-                    "REG_ANS": "reg_ans",
-                    "CD_CONTA_CONTABIL": "cd_conta_contabil",
-                    "DESCRICAO": "descricao",
-                    "VL_SALDO_INICIAL": "vl_saldo_inicial",
-                    "VL_SALDO_FINAL": "vl_saldo_final"
-                }
-                data_frame = data_frame.rename(columns=column_mapping)
+            db_connection = DatabaseRepository.get_connection()
 
-                data_frame = data_frame.fillna("")
-                
-                data_frame['reg_ans'] = data_frame['reg_ans'].astype(int)
-                
-                data_frame['vl_saldo_inicial'] = pd.to_numeric(data_frame['vl_saldo_inicial'], errors='coerce')
-                data_frame['vl_saldo_final'] = pd.to_numeric(data_frame['vl_saldo_final'], errors='coerce')
-                
-                inserted = AccountingRepository.bulk_insert(data_frame.to_dict('records'))
-                
+            try:
+                inserted = AccountingRepository.bulk_insert(entries)
                 db_connection.commit()
+                
                 return JSONResponse(
                     content={"message": f"Successfully imported {inserted} accounting records"},
                     status_code=200
