@@ -38,8 +38,8 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   [
     {
       "data": "YYYY-MM-DD",
-      "reg_ans": string,
-      "cd_conta_contabil": string,
+      "reg_ans": int,
+      "cd_conta_contabil": int,
       "descricao": string,
       "vl_saldo_inicial": float,
       "vl_saldo_final": float
@@ -65,7 +65,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
     "data": [
         {
             "registro_ans": int,
-            "cnpj": int,
+            "cnpj": string,
             "razao_social": string,
             "nome_fantasia": string,
             "modalidade": string,
@@ -82,7 +82,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
             "endereco_eletronico": string,
             "representante": string,
             "cargo_representante": string,
-            "regiao_de_comercializacao": string,
+            "regiao_de_comercializacao": int,
             "data_registro_ans": "YYYY-MM-DD"
         }
     ],
@@ -94,6 +94,23 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 - **Descrição**: Recuperar informações sobre uma operadora específica
 - **Parâmetros**:
   - `registro_ans` (int): Número de registro da operadora
+- **Resposta**:
+  ```json
+  {
+    "registro_ans": integer,
+    "razao_social": string,
+    "cnpj": string,
+    "data_registro_ans": "YYYY-MM-DD"
+  }
+  ```
+
+#### GET /operators/search
+- **Descrição**: Busca operadoras por razão social ou nome fantasia usando Levenshtein
+- **Parâmetros**:
+  - `name` (str): Razão social ou nome fantasia da operadora
+  - `city` (str): Cidade da operadora
+  - `state` (str): Estado da operadora
+  - `modality` (str): Modalidade da operadora
 - **Resposta**:
   ```json
   {

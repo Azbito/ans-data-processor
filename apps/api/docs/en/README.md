@@ -65,7 +65,7 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
     "data": [
       {
         "registro_ans": int,
-        "cnpj": int,
+        "cnpj": string,
         "razao_social": string,
         "nome_fantasia": string,
         "modalidade": string,
@@ -82,7 +82,7 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
         "endereco_eletronico": string,
         "representante": string,
         "cargo_representante": string,
-        "regiao_de_comercializacao": string,
+        "regiao_de_comercializacao": int,
         "data_registro_ans": "YYYY-MM-DD"
       }
     ],
@@ -98,7 +98,7 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
 ```json
 {
     "registro_ans": int,
-    "cnpj": int,
+    "cnpj": string,
     "razao_social": string,
     "nome_fantasia": string,
     "modalidade": string,
@@ -115,7 +115,7 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
     "endereco_eletronico": string,
     "representante": string,
     "cargo_representante": string,
-    "regiao_de_comercializacao": string,
+    "regiao_de_comercializacao": int,
     "data_registro_ans": "YYYY-MM-DD"
 }
   ```
@@ -127,6 +127,23 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
 - **Request Body**:
   - `file` (UploadFile): CSV file containing operator data
 
+#### GET /operators/search
+- **Description**: Search operators by corporate name or trade name using Levenshtein distance
+- **Parameters**:
+  - `name` (str): Corporate name or trade name of the operator
+  - `city` (str): City of the operator
+  - `state` (str): State of the operator
+  - `modality` (str): Modality of the operator
+- **Response**:
+  ```json
+  {
+    "registro_ans": integer,
+    "razao_social": string,
+    "cnpj": string,
+    "data_registro_ans": "YYYY-MM-DD"
+  }
+  ```
+  
 ### 3. PDF Processing Endpoints
 
 #### GET /pdf/ans
