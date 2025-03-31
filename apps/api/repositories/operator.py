@@ -5,6 +5,7 @@ from .database import DatabaseRepository
 import base64
 import json
 from psycopg2.extras import execute_values
+from datetime import date
 
 class OperatorRepository:
     @staticmethod
@@ -171,7 +172,7 @@ class OperatorRepository:
                 db_connection.close()
 
     @staticmethod
-    def bulk_insert(operators: List[dict]) -> int:
+    def bulk_insert(operators: List[Operator]) -> int:
         if not operators:
             return 0
 
@@ -189,7 +190,13 @@ class OperatorRepository:
                 'cargo_representante', 'regiao_de_comercializacao', 'data_registro_ans'
             ]
 
-            values = [[operator[col] for col in columns] for operator in operators]
+            values = []
+            for operator in operators:
+                operator_dict = operator.dict()
+               
+                if isinstance(operator_dict['data_registro_ans'], date):
+                    operator_dict['data_registro_ans'] = operator_dict['data_registro_ans'].isoformat()
+                values.append(tuple(operator_dict[col] for col in columns))
 
             insert_query = sql.SQL("""
                 INSERT INTO operators ({columns})
@@ -220,8 +227,11 @@ class OperatorRepository:
 
             execute_values(cursor, insert_query, values)
             db_connection.commit()
-            
-            return len(operators)
+            return len(values)
+        except Exception as e:
+            if db_connection:
+                db_connection.rollback()
+            raise e
         finally:
             if cursor:
                 cursor.close()

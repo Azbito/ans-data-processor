@@ -82,7 +82,16 @@ class OperatorController:
 
             data_frame = data_frame.fillna("")
             
-            inserted = OperatorRepository.bulk_insert(data_frame.to_dict('records'))
+            operators = []
+            for record in data_frame.to_dict('records'):
+                try:
+                    operator = Operator(**record)
+                    operators.append(operator)
+                except Exception as e:
+                    print(f"Error processing record: {record}, Error: {str(e)}")
+                    continue
+            
+            inserted = OperatorRepository.bulk_insert(operators)
             
             return JSONResponse(
                 content={"message": f"Successfully imported {inserted} operator records"},
