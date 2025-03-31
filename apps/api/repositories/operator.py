@@ -18,8 +18,8 @@ class OperatorRepository:
 
             query = """
             CREATE TABLE IF NOT EXISTS operators (
-                registro_ans VARCHAR PRIMARY KEY,
-                cnpj VARCHAR,
+                registro_ans INT PRIMARY KEY,
+                cnpj VARCHAR(14),
                 razao_social VARCHAR,
                 nome_fantasia VARCHAR,
                 modalidade VARCHAR,
@@ -29,10 +29,10 @@ class OperatorRepository:
                 bairro VARCHAR,
                 cidade VARCHAR,
                 uf VARCHAR,
-                cep VARCHAR,
-                ddd VARCHAR,
-                telefone VARCHAR,
-                fax VARCHAR,
+                cep VARCHAR(8),
+                ddd INT,
+                telefone VARCHAR(20),
+                fax VARCHAR(20),
                 endereco_eletronico VARCHAR,
                 representante VARCHAR,
                 cargo_representante VARCHAR,
@@ -232,6 +232,72 @@ class OperatorRepository:
             if db_connection:
                 db_connection.rollback()
             raise e
+        finally:
+            if cursor:
+                cursor.close()
+            if db_connection:
+                db_connection.close()
+
+    @staticmethod
+    async def search_operators(name: Optional[str], city: Optional[str], state: Optional[str], modality: Optional[str]) -> List[Operator]:
+        db_connection = None
+        cursor = None
+        try:
+            db_connection = DatabaseRepository.get_connection()
+            cursor = db_connection.cursor()
+
+            conditions = []
+            params = []
+
+            if name:
+                conditions.append("(razao_social ILIKE %s OR nome_fantasia ILIKE %s)")
+                params.extend([f"%{name}%", f"%{name}%"])
+            if city:
+                conditions.append("cidade ILIKE %s")
+                params.append(f"%{city}%")
+            if state:
+                conditions.append("uf = %s")
+                params.append(state)
+            if modality:
+                conditions.append("modalidade ILIKE %s")
+                params.append(f"%{modality}%")
+
+            query = "SELECT * FROM operators"
+            if conditions:
+                query += " WHERE " + " AND ".join(conditions)
+            query += " ORDER BY registro_ans"
+
+            cursor.execute(query, params)
+            rows = cursor.fetchall()
+
+            operators = []
+            for row in rows:
+                operator = Operator(
+                    registro_ans=row[0],
+                    cnpj=row[1],
+                    razao_social=row[2],
+                    nome_fantasia=row[3],
+                    modalidade=row[4],
+                    logradouro=row[5],
+                    numero=row[6],
+                    complemento=row[7],
+                    bairro=row[8],
+                    cidade=row[9],
+                    uf=row[10],
+                    cep=row[11],
+                    ddd=row[12],
+                    telefone=row[13],
+                    fax=row[14],
+                    endereco_eletronico=row[15],
+                    representante=row[16],
+                    cargo_representante=row[17],
+                    regiao_de_comercializacao=row[18],
+                    data_registro_ans=row[19] if row[19] else None
+                )
+                operators.append(operator)
+
+            return operators
+
         finally:
             if cursor:
                 cursor.close()

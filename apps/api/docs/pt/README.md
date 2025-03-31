@@ -18,8 +18,8 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
     "data": [
       {
         "data": "YYYY-MM-DD",
-        "reg_ans": string,
-        "cd_conta_contabil": string,
+        "reg_ans": int,
+        "cd_conta_contabil": int,
         "descricao": string,
         "vl_saldo_inicial": float,
         "vl_saldo_final": float
@@ -63,18 +63,34 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```json
   {
     "data": [
-      {
-        "registro_ans": integer,
-        "razao_social": string,
-        "cnpj": string,
-        "data_registro_ans": "YYYY-MM-DD"
-      }
+        {
+            "registro_ans": int,
+            "cnpj": int,
+            "razao_social": string,
+            "nome_fantasia": string,
+            "modalidade": string,
+            "logradouro": string,
+            "numero": int,
+            "complemento": string,
+            "bairro": string,
+            "cidade": string,
+            "uf": string,
+            "cep": int,
+            "ddd": int,
+            "telefone": int,
+            "fax": int,
+            "endereco_eletronico": string,
+            "representante": string,
+            "cargo_representante": string,
+            "regiao_de_comercializacao": string,
+            "data_registro_ans": "YYYY-MM-DD"
+        }
     ],
     "next_cursor": string
   }
   ```
 
-#### GET /operators/{registro_ans}
+#### GET /operators/id/{registro_ans}
 - **Descrição**: Recuperar informações sobre uma operadora específica
 - **Parâmetros**:
   - `registro_ans` (int): Número de registro da operadora

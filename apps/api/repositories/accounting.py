@@ -25,8 +25,8 @@ class AccountingRepository:
                 """
                 CREATE TABLE IF NOT EXISTS {table} (
                     data DATE,
-                    reg_ans VARCHAR,
-                    cd_conta_contabil VARCHAR(50),
+                    reg_ans INT,
+                    cd_conta_contabil BIGINT,
                     descricao VARCHAR(255),
                     vl_saldo_inicial DECIMAL(18, 2),
                     vl_saldo_final DECIMAL(18, 2)
@@ -170,6 +170,11 @@ class AccountingRepository:
             cursor = db_connection.cursor()
 
             columns = ['data', 'reg_ans', 'cd_conta_contabil', 'descricao', 'vl_saldo_inicial', 'vl_saldo_final']
+            
+            
+            if isinstance(entries[0], AccountingEntry):
+                entries = [entry.dict() for entry in entries]
+            
             
             for entry in entries:
                 entry['reg_ans'] = str(entry['reg_ans'])

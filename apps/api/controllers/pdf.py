@@ -29,7 +29,7 @@ class PDFController:
         extract_dir = "/tmp/extracted_pdfs"
         os.makedirs(extract_dir, exist_ok=True)
 
-        zip_url = self.r2_service.get_file("pdfs/asn.zip")
+        zip_url = self.r2_service.get_file("pdfs/ans.zip")
 
         response = requests.get(zip_url)
         if response.status_code != 200:
@@ -40,7 +40,7 @@ class PDFController:
                 },
             )
 
-        zip_file_path = os.path.join(extract_dir, "asn.zip")
+        zip_file_path = os.path.join(extract_dir, "ans.zip")
         with open(zip_file_path, "wb") as f:
             f.write(response.content)
 
@@ -85,7 +85,7 @@ class PDFController:
                     content={"detail": "No data found for the provided URL."},
                 )
 
-            r2_download_url = self.r2_service.get_file("pdfs/asn.zip")
+            r2_download_url = self.r2_service.get_file("pdfs/ans.zip")
 
             return JSONResponse(status_code=200, content={"url": r2_download_url})
 

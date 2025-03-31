@@ -18,8 +18,8 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
     "data": [
       {
         "data": "YYYY-MM-DD",
-        "reg_ans": string,
-        "cd_conta_contabil": string,
+        "reg_ans": int,
+        "cd_conta_contabil": int,
         "descricao": string,
         "vl_saldo_inicial": float,
         "vl_saldo_final": float
@@ -38,8 +38,8 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
   [
     {
       "data": "YYYY-MM-DD",
-      "reg_ans": string,
-      "cd_conta_contabil": string,
+      "reg_ans": int,
+      "cd_conta_contabil": int,
       "descricao": string,
       "vl_saldo_inicial": float,
       "vl_saldo_final": float
@@ -64,9 +64,25 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
   {
     "data": [
       {
-        "registro_ans": integer,
+        "registro_ans": int,
+        "cnpj": int,
         "razao_social": string,
-        "cnpj": string,
+        "nome_fantasia": string,
+        "modalidade": string,
+        "logradouro": string,
+        "numero": int,
+        "complemento": string,
+        "bairro": string,
+        "cidade": string,
+        "uf": string,
+        "cep": int,
+        "ddd": int,
+        "telefone": int,
+        "fax": int,
+        "endereco_eletronico": string,
+        "representante": string,
+        "cargo_representante": string,
+        "regiao_de_comercializacao": string,
         "data_registro_ans": "YYYY-MM-DD"
       }
     ],
@@ -74,19 +90,37 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
   }
   ```
 
-#### GET /operators/{registro_ans}
+#### GET /operators/id/{registro_ans}
 - **Description**: Retrieve information about a specific operator
 - **Parameters**:
   - `registro_ans` (int): Operator registration number
 - **Response**:
-  ```json
-  {
-    "registro_ans": integer,
+```json
+{
+    "registro_ans": int,
+    "cnpj": int,
     "razao_social": string,
-    "cnpj": string,
+    "nome_fantasia": string,
+    "modalidade": string,
+    "logradouro": string,
+    "numero": int,
+    "complemento": string,
+    "bairro": string,
+    "cidade": string,
+    "uf": string,
+    "cep": int,
+    "ddd": int,
+    "telefone": int,
+    "fax": int,
+    "endereco_eletronico": string,
+    "representante": string,
+    "cargo_representante": string,
+    "regiao_de_comercializacao": string,
     "data_registro_ans": "YYYY-MM-DD"
-  }
+}
   ```
+
+
 
 #### POST /operators/import
 - **Description**: Import operator data from a CSV file

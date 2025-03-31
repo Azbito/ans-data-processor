@@ -27,7 +27,7 @@ def controller():
 def test_ans_pdf_scrapper_success(controller):
 
     test_url = "http://example.com"
-    download_url = "http://r2.example.com/pdfs/asn.zip"
+    download_url = "http://r2.example.com/pdfs/ans.zip"
     controller.pdf_service.process_pdf.return_value = True
     controller.r2_service.get_file.return_value = download_url
 
@@ -37,7 +37,7 @@ def test_ans_pdf_scrapper_success(controller):
     assert response.status_code == 200
     assert response.body.decode() == f'{{"url":"{download_url}"}}'
     controller.pdf_service.process_pdf.assert_called_once_with(test_url)
-    controller.r2_service.get_file.assert_called_once_with("pdfs/asn.zip")
+    controller.r2_service.get_file.assert_called_once_with("pdfs/ans.zip")
 
 
 def test_ans_pdf_scrapper_no_data(controller):

@@ -15,7 +15,7 @@ class PDFService:
 
     def process_pdf(self, target_url: str) -> bool:
         files_to_zip: List[Tuple[str, str]] = []
-        zip_file_path = "/tmp/asn.zip"
+        zip_file_path = "/tmp/ans.zip"
         try:
             pdf_links = ScraperService.get_pdf_links(target_url)
 
@@ -39,7 +39,7 @@ class PDFService:
             self.zip_service.compress_files_to_zip(files_to_zip, zip_file_path)
 
             with open(zip_file_path, "rb") as zip_file:
-                self.r2_service.save_pdf_to_r2(zip_file.read(), "asn.zip", "zip")
+                self.r2_service.save_pdf_to_r2(zip_file.read(), "ans.zip", "zip")
 
             os.remove(zip_file_path)
             return True
@@ -59,12 +59,12 @@ class PDFService:
 
     def extract_tables(self, target_file: str) -> str:
         extract_dir = "/tmp/extracted_pdfs"
-        zip_file_path = os.path.join(extract_dir, "asn.zip")
+        zip_file_path = os.path.join(extract_dir, "ans.zip")
         csv_file_name = "/tmp/rol_table.csv"
         tmp_csv = ""
 
         try:
-            zipped_file_url = self.r2_service.get_file("pdfs/asn.zip")
+            zipped_file_url = self.r2_service.get_file("pdfs/ans.zip")
             response = requests.get(zipped_file_url)
 
             if response.status_code != 200:

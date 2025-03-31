@@ -61,7 +61,7 @@ def test_process_pdf_failure(mock_services, mocker):
 def test_extract_tables_success(mock_services, mocker):
     pdf_service, r2_service_mock, zip_service_mock, csv_service_mock = mock_services
 
-    r2_service_mock.get_file.return_value = "http://example.com/asn.zip"
+    r2_service_mock.get_file.return_value = "http://example.com/ans.zip"
 
     mocker.patch(
         "requests.get", return_value=MagicMock(status_code=200, content=b"zip content")

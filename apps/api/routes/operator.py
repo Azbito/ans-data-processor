@@ -12,9 +12,18 @@ async def get_all_operators(
 ):
     return operator_controller.get_all_operators(limit, cursor)
 
-@router.get("/operators/{registro_ans}")
+@router.get("/operators/id/{registro_ans}")
 async def get_operator(registro_ans: int):
     return operator_controller.get_operator(registro_ans)
+
+@router.get("/operators/search")
+async def search_operators(
+    name: Optional[str] = Query(None, description="Search by razao_social or nome_fantasia"),
+    city: Optional[str] = Query(None, description="Search by cidade"),
+    state: Optional[str] = Query(None, description="Search by UF"),
+    modality: Optional[str] = Query(None, description="Search by modalidade")
+):
+    return await operator_controller.search_operators(name, city, state, modality)
 
 @router.post("/operators/import")
 async def import_operators(file: UploadFile):

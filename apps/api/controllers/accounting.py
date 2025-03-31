@@ -69,39 +69,100 @@ class AccountingController:
         try:
             content = await file.read()
             
-            data_frame = pd.read_csv(
-                io.StringIO(content.decode()),
-                sep=';',
-                decimal=',',
-                thousands='.'
-            )
-
-            entries = []
-            for _, row in data_frame.iterrows():
-                entry = AccountingEntry(
-                    data=row['data'],
-                    reg_ans=str(row['reg_ans']),
-                    cd_conta_contabil=row['cd_conta_contabil'],
-                    descricao=row['descricao'],
-                    vl_saldo_inicial=Decimal(str(row['vl_saldo_inicial'])),
-                    vl_saldo_final=Decimal(str(row['vl_saldo_final']))
-                )
-                entries.append(entry)
-
-            db_connection = DatabaseRepository.get_connection()
-
+            print("\nCSV Content:")
+            print(content[:500].decode()) 
+            print("\n")
+            
             try:
-                inserted = AccountingRepository.bulk_insert(entries)
-                db_connection.commit()
                 
-                return JSONResponse(
-                    content={"message": f"Successfully imported {inserted} accounting records"},
-                    status_code=200
+                data_frame = pd.read_csv(
+                    io.StringIO(content.decode()),
+                    sep=';',
+                    decimal=',',
+                    thousands='.'
                 )
+                
+                
+                data_frame.columns = data_frame.columns.str.lower()
+                
+                
+                expected_columns = {
+                    'data': str,
+                    'reg_ans': int,
+                    'cd_conta_contabil': int,
+                    'descricao': str,
+                    'vl_saldo_inicial': float,
+                    'vl_saldo_final': float
+                }
+                
+                
+                missing_columns = [col for col in expected_columns.keys() if col not in data_frame.columns]
+                if missing_columns:
+                    raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
+                
+                
+                for col, dtype in expected_columns.items():
+                    if dtype == str:
+                        data_frame[col] = data_frame[col].astype(str)
+                    elif dtype == int:
+                        data_frame[col] = pd.to_numeric(data_frame[col], errors='coerce').fillna(0).astype(int)
+                    elif dtype == float:
+                        data_frame[col] = pd.to_numeric(data_frame[col], errors='coerce').fillna(0.0)
+                
+                print("\nDataFrame Preview:")
+                print(data_frame.head())
+                print("\n")
+                
+                
+                data_frame['data'] = pd.to_datetime(data_frame['data'], format='%Y-%m-%d', errors='coerce')
+                
+                entries = []
+                for _, row in data_frame.iterrows():
+                    if pd.isna(row['data']):
+                        continue
+                    
+                    entry = AccountingEntry(
+                        data=row['data'].to_pydatetime().date(),
+                        reg_ans=row['reg_ans'],
+                        cd_conta_contabil=row['cd_conta_contabil'],
+                        descricao=row['descricao'],
+                        vl_saldo_inicial=Decimal(str(row['vl_saldo_inicial'])),
+                        vl_saldo_final=Decimal(str(row['vl_saldo_final']))
+                    )
+                    entries.append(entry)
+
+                
+                entries_dict = [entry.dict() for entry in entries]
+
+                db_connection = DatabaseRepository.get_connection()
+
+                try:
+                    inserted = AccountingRepository.bulk_insert(entries_dict)
+                    db_connection.commit()
+
+                    return JSONResponse(
+                        content={
+                            "message": f"Successfully imported {inserted} accounting records",
+                            "total_rows": len(data_frame),
+                            "imported_rows": inserted
+                        },
+                        status_code=200
+                    )
+                except Exception as e:
+                    db_connection.rollback()
+                    raise HTTPException(status_code=500, detail=str(e))
+                finally:
+                    db_connection.close()
+            
             except Exception as e:
-                db_connection.rollback()
-                raise HTTPException(status_code=500, detail=str(e))
-            finally:
-                db_connection.close()
+                print(f"Error processing CSV: {str(e)}")
+                raise HTTPException(
+                    status_code=400,
+                    detail={
+                        "error": str(e),
+                        "message": "Failed to process CSV file. Please check the file format and content."
+                    }
+                )
+            
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

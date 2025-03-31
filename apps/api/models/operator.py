@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
 
-
 class Operator(BaseModel):
     registro_ans: int
     cnpj: str
@@ -14,12 +13,12 @@ class Operator(BaseModel):
     bairro: str
     cidade: str
     uf: str
-    cep: str
-    ddd: str
-    telefone: str
-    fax: str
+    cep: int
+    ddd: int
+    telefone: int
+    fax: int
     endereco_eletronico: str
     representante: str
     cargo_representante: str
-    regiao_de_comercializacao: str
+    regiao_de_comercializacao: int
     data_registro_ans: date
