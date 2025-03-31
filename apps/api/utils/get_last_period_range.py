@@ -25,7 +25,7 @@ def get_last_period_range(period: str, date: datetime = datetime.now()) -> tuple
         end_date = end_date.replace(day=1) - timedelta(days=1)
 
     elif period == 'yearly':
-        start_date = datetime(date.year, 1, 1)
-        end_date = datetime(date.year, 12, 31, 23, 59, 59, 999999)
+        start_date = datetime(date.year - 1, 1, 1)
+        end_date = datetime(date.year - 1, 12, 31, 23, 59, 59, 999999)
 
     return start_date, end_date
