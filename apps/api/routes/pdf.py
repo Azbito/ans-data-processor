@@ -8,6 +8,6 @@ pdf_controller = PDFController()
 async def ans_pdf_scrapper(target_url: str):
     return pdf_controller.ans_pdf_scrapper(target_url)
 
-@router.get("/pdf/embed_ans_pdf")
+@router.get("/pdf/scrap")
 async def get_ans_pdf(target_url: str, target_file: str):
     return pdf_controller.get_ans_pdf(target_url, target_file)

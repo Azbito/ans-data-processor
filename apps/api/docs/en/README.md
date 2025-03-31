@@ -136,7 +136,6 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
 - **Description**: Extract tables from a PDF file
 - **Parameters**:
   - `target_file` (str): Target file name
-  - `extension` (str): File extension
 - **Response**:
   ```json
   {
@@ -144,11 +143,8 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
   }
   ```
 
-#### GET /csv/download-tables
+#### GET /csv/download-table
 - **Description**: Extract tables from a PDF and download the processed file
-- **Parameters**:
-  - `target_file` (str): Target file name
-  - `extension` (str): File extension
 - **Response**:
   ```json
   {

@@ -144,7 +144,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   }
   ```
 
-#### GET /csv/download-tables
+#### GET /csv/download-table
 - **Descrição**: Extrair tabelas de um PDF e baixar o arquivo processado
 - **Parâmetros**:
   - `target_file` (str): Nome do arquivo de destino
