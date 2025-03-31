@@ -1,21 +1,14 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from middleware import add_cors_middleware
 from routes import pdf, csv, operator, accounting, analytics
 from repositories.operator import OperatorRepository
 from repositories.accounting import AccountingRepository
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+add_cors_middleware(app)
 
 @app.on_event("startup")
-
 async def startup_event():
     OperatorRepository.create_table()
     AccountingRepository.create_table()

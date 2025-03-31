@@ -27,31 +27,31 @@ def test_extract_tables_success(controller):
     expected_url = "https://example.com/tables.csv"
     controller.pdf_service.extract_tables.return_value = expected_url
     
-    result = controller.extract_tables("file.pdf", "pdf")
+    result = controller.extract_tables("file.pdf")
     
     assert isinstance(result, JSONResponse)
     assert result.status_code == 200
     assert result.body == b'{"url":"https://example.com/tables.csv"}'
-    controller.pdf_service.extract_tables.assert_called_once_with("file.pdf", "pdf")
+    controller.pdf_service.extract_tables.assert_called_once_with("file.pdf")
 
 def test_extract_tables_error(controller):
     error_msg = "Extraction failed"
     controller.pdf_service.extract_tables.side_effect = Exception(error_msg)
     
     with pytest.raises(HTTPException) as exc_info:
-        controller.extract_tables("file.pdf", "pdf")
+        controller.extract_tables("file.pdf")
     
     assert exc_info.value.status_code == 500
     assert error_msg in str(exc_info.value.detail)
 
-def test_extract_and_download_tables_success(controller):
+def test_download_unzipped_table_success(controller):
     download_url = "https://example.com/tables.zip"
     extracted_file = "/tmp/extracted/tables.csv"
     extract_dir = "/tmp/extracted"
     temp_zip_path = "/tmp/tables.zip"
     r2_path = "csv/extracted/tables.csv"
     final_url = "https://r2.example.com/csv/extracted/tables.csv"
-    
+
     controller.pdf_service.extract_tables.return_value = download_url
     controller.zip_service.download_and_extract.return_value = (
         extracted_file,
@@ -64,36 +64,45 @@ def test_extract_and_download_tables_success(controller):
     mock_file.__enter__.return_value.read.return_value = b"csv,data,here"
 
     with patch("builtins.open", return_value=mock_file):
-        result = controller.extract_and_download_tables("file.pdf", "pdf")
+        result = controller.download_unzipped_table()
 
     assert isinstance(result, JSONResponse)
     assert result.status_code == 200
     assert result.body == b'{"url":"https://r2.example.com/csv/extracted/tables.csv"}'
 
-    controller.pdf_service.extract_tables.assert_called_once_with("file.pdf", "pdf")
-    controller.zip_service.download_and_extract.assert_called_once_with(download_url, "file.pdf", "pdf")
+    controller.pdf_service.extract_tables.assert_called_once()
+    extract_tables_args, extract_tables_kwargs = controller.pdf_service.extract_tables.call_args
+
+    assert "target_file" in extract_tables_kwargs
+    assert extract_tables_kwargs["target_file"] == "Anexo_I"
+
+    controller.zip_service.download_and_extract.assert_called_once_with(
+        download_url, 
+        target_file="rol_table", 
+        extension="csv"
+    )
 
     controller.r2_service.save_to_r2.assert_called_once()
     args, kwargs = controller.r2_service.save_to_r2.call_args
 
     assert isinstance(args[0], bytes)
     assert args[1] == "csv/extracted/tables.csv"
-    assert args[2] == "pdf" 
+    assert args[2] == "csv"
 
     controller.r2_service.get_file.assert_called_once_with("csv/extracted/tables.csv")
     controller.zip_service.cleanup_temp_files.assert_called_once_with(extract_dir, temp_zip_path)
 
-def test_extract_and_download_tables_extraction_error(controller):
+def test_download_unzipped_table_extraction_error(controller):
     error_msg = "Extraction failed"
     controller.pdf_service.extract_tables.side_effect = Exception(error_msg)
     
     with pytest.raises(HTTPException) as exc_info:
-        controller.extract_and_download_tables("file.pdf", "pdf")
+        controller.download_unzipped_table()
     
     assert exc_info.value.status_code == 500
     assert error_msg in str(exc_info.value.detail)
 
-def test_extract_and_download_tables_download_error(controller):
+def test_download_unzipped_table_download_error(controller):
     download_url = "https://example.com/tables.zip"
     error_msg = "Download failed"
     
@@ -101,7 +110,7 @@ def test_extract_and_download_tables_download_error(controller):
     controller.zip_service.download_and_extract.side_effect = Exception(error_msg)
     
     with pytest.raises(HTTPException) as exc_info:
-        controller.extract_and_download_tables("file.pdf", "pdf")
+        controller.download_unzipped_table()
     
     assert exc_info.value.status_code == 500
     assert error_msg in str(exc_info.value.detail)

@@ -96,7 +96,7 @@ def test_extract_tables_success(mock_services, mocker):
     r2_service_mock.save_to_r2.return_value = True
     r2_service_mock.get_file.return_value = "/tmp/sample.zip"
 
-    result = pdf_service.extract_tables("sample.pdf", ".pdf")
+    result = pdf_service.extract_tables("sample.pdf")
     assert result == "/tmp/sample.zip"
 
     zip_service_mock.unzip.assert_called_once()

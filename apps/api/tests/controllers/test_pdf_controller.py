@@ -68,27 +68,25 @@ def test_ans_pdf_scrapper_error(controller):
 def test_extract_tables_success(controller):
 
     test_file = "test.pdf"
-    test_extension = "pdf"
     result_url = "http://r2.example.com/tables.csv"
     controller.pdf_service.extract_tables.return_value = result_url
 
-    response = controller.extract_tables(test_file, test_extension)
+    response = controller.extract_tables(test_file)
 
     assert isinstance(response, JSONResponse)
     assert response.status_code == 200
     assert response.body.decode() == f'{{"url":"{result_url}"}}'
     controller.pdf_service.extract_tables.assert_called_once_with(
-        test_file, test_extension
+        test_file
     )
 
 
 def test_extract_tables_error(controller):
 
     test_file = "test.pdf"
-    test_extension = "pdf"
     controller.pdf_service.extract_tables.side_effect = Exception("Extraction failed")
 
     with pytest.raises(HTTPException) as exc_info:
-        controller.extract_tables(test_file, test_extension)
+        controller.extract_tables(test_file)
     assert exc_info.value.status_code == 500
     assert "Error while extracting tables" in str(exc_info.value.detail)
