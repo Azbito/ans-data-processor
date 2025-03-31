@@ -57,7 +57,7 @@ class PDFService:
             if os.path.exists(zip_file_path):
                 self.zip_service.cleanup_temp_files(None, zip_file_path)
 
-    def extract_tables(self, target_file: str, extension: str) -> str:
+    def extract_tables(self, target_file: str) -> str:
         extract_dir = "/tmp/extracted_pdfs"
         zip_file_path = os.path.join(extract_dir, "asn.zip")
         csv_file_name = "/tmp/rol_table.csv"
@@ -78,7 +78,7 @@ class PDFService:
             zipped_file = zip_file_path
 
             pdf_file = self.zip_service.unzip(
-                extract_dir, zipped_file, target_file, extension
+                extract_dir, zipped_file, target_file, extension="pdf"
             )
 
             data = []

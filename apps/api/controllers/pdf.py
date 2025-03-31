@@ -92,9 +92,9 @@ class PDFController:
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"ANS PDF Scrapper: {str(e)}")
 
-    def extract_tables(self, target_file: str, extension: str) -> JSONResponse:
+    def extract_tables(self, target_file: str) -> JSONResponse:
         try:
-            data = self.pdf_service.extract_tables(target_file, extension)
+            data = self.pdf_service.extract_tables(target_file)
 
             return JSONResponse(status_code=200, content={"url": data})
 

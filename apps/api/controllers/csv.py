@@ -16,9 +16,9 @@ class CSVController:
             self.r2_service, self.zip_service, self.csv_service
         )
 
-    def extract_tables(self, target_file: str, extension: str) -> JSONResponse:
+    def extract_tables(self, target_file: str) -> JSONResponse:
         try:
-            data = self.pdf_service.extract_tables(target_file, extension)
+            data = self.pdf_service.extract_tables(target_file)
 
             return JSONResponse(status_code=200, content={"url": data})
 
@@ -27,17 +27,14 @@ class CSVController:
                 status_code=500, detail=f"Error while extracting tables: {str(e)}"
             )
 
-    def extract_and_download_tables(
-        self, target_file: str, extension: str
+    def download_unzipped_table(
+        self
     ) -> JSONResponse:
         try:
-
-            download_url = self.pdf_service.extract_tables(target_file, extension)
-
+            download_url = self.pdf_service.extract_tables(target_file="Anexo_I")
+   
             extracted_file, extract_dir, temp_zip_path = (
-                self.zip_service.download_and_extract(
-                    download_url, target_file, extension
-                )
+                self.zip_service.download_and_extract(download_url, target_file="rol_table", extension="csv")
             )
 
             file_name = os.path.basename(extracted_file)
@@ -45,7 +42,7 @@ class CSVController:
 
             with open(extracted_file, "rb") as file:
                 content = file.read()
-                self.r2_service.save_to_r2(content, r2_path, extension.replace(".", ""))
+                self.r2_service.save_to_r2(content, r2_path, "csv")
 
             download_url = self.r2_service.get_file(r2_path)
 

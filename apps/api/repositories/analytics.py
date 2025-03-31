@@ -51,9 +51,6 @@ class AnalyticsRepository:
                 limit
             ))
             rows = cursor.fetchall()
-            print(f"Query returned {len(rows)} results for period {period}")
-            if rows:
-                print("First result:", rows[0])
 
             results = []
             for row in rows:
@@ -62,20 +59,6 @@ class AnalyticsRepository:
                     "registro_ans": row[1],
                     "valor_despesa": float(row[2]) if row[2] else 0
                 })
-
-            if not results:
-                results = [{
-                    "debug_info": "No results found",
-                    "date_range": {
-                        "start": start_date.date().isoformat(),
-                        "end": end_date.date().isoformat(),
-                        "period": period
-                    },
-                    "sample_accounts": [
-                        {"cd_conta_contabil": acc[0], "descricao": acc[1]} 
-                        for acc in sample_accounts
-                    ] if sample_accounts else []
-                }]
 
             db_connection.commit()
             return results
