@@ -51,12 +51,6 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
 - **Description**: Import accounting data from a CSV file
 - **Request Body**:
   - `file` (UploadFile): CSV file containing accounting data
-- **Response**:
-  ```json
-  {
-    "message": "Successfully imported X accounting records"
-  }
-  ```
 
 ### 2. Operator Endpoints
 
@@ -98,12 +92,6 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
 - **Description**: Import operator data from a CSV file
 - **Request Body**:
   - `file` (UploadFile): CSV file containing operator data
-- **Response**:
-  ```json
-  {
-    "message": "Successfully imported X operator records"
-  }
-  ```
 
 ### 3. PDF Processing Endpoints
 

@@ -51,12 +51,6 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 - **Descrição**: Importar dados contábeis de um arquivo CSV
 - **Corpo da Requisição**:
   - `file` (UploadFile): Arquivo CSV contendo dados contábeis
-- **Resposta**:
-  ```json
-  {
-    "message": "X registros contábeis importados com sucesso"
-  }
-  ```
 
 ### 2. Endpoints de Operadoras
 
@@ -98,12 +92,6 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 - **Descrição**: Importar dados de operadoras de um arquivo CSV
 - **Corpo da Requisição**:
   - `file` (UploadFile): Arquivo CSV contendo dados das operadoras
-- **Resposta**:
-  ```json
-  {
-    "message": "X registros de operadoras importados com sucesso"
-  }
-  ```
 
 ### 3. Endpoints de Processamento de PDF
 
