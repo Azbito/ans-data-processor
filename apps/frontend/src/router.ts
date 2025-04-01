@@ -1,6 +1,7 @@
-import Extractor from '@/pages/extractor.vue';
-import Home from '@/pages/home.vue';
-import Operators from '@/pages/operators.vue';
+import Analytics from '@/pages/AnalyticsPage.vue';
+import Extractor from '@/pages/ExtractorPage.vue';
+import Home from '@/pages/HomePage.vue';
+import Operators from '@/pages/OperatorsPage.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -15,6 +16,10 @@ const routes = [
     {
         path: '/operators',
         component: Operators,
+    },
+    {
+        path: '/analytics',
+        component: Analytics,
     },
 ];
 

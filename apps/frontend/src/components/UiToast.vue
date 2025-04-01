@@ -17,8 +17,8 @@
     </button>
 </template>
 
-<script setup lang="ts">
-import { useToast } from '@/composables/use-toast';
+<script lang="ts" setup>
+import { useToast } from '@/composables/useToast';
 import { computed } from 'vue';
 
 const { currentToast, isShowing } = useToast();

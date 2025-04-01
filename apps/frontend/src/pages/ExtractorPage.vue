@@ -1,9 +1,9 @@
-<script setup lang="ts">
-import Button from '@/components/button.vue';
-import Input from '@/components/input.vue';
-import Preloader from '@/components/preloader.vue';
-import Toast from '@/components/toast.vue';
-import { useToast } from '@/composables/use-toast';
+<script lang="ts" setup>
+import UiButton from '@/components/UiButton.vue';
+import UiInput from '@/components/UiInput.vue';
+import UiPreloader from '@/components/UiPreloader.vue';
+import UiToast from '@/components/UiToast.vue';
+import { useToast } from '@/composables/useToast';
 import { getCSV } from '@/services/csv.ts';
 import { getANSZippedPDFs, getPDF } from '@/services/pdf.ts';
 import { ref } from 'vue';
@@ -87,37 +87,37 @@ const extractPdf = async () => {
 
 <template>
     <div class="mt-32 flex flex-wrap gap-6 px-16">
-        <Input
+        <UiInput
             v-model.trim="targetUrl"
             :label="$t('targetUrl')"
             :placeholder="$t('targetUrlPlaceholder')" />
 
         <div class="bg-primary w-120 flex flex-col justify-between gap-6 p-6">
             <b class="text-text text-lg">{{ $t('extractZip') }}</b>
-            <Button :onclick="extractPdf" :disabled="isLoading">
+            <UiButton :title="$t('getZIP')" :disabled="isLoading" :onclick="extractPdf">
                 {{ $t('getZIP') }}
-            </Button>
+            </UiButton>
         </div>
 
         <div class="bg-primary w-120 flex flex-col gap-6 p-6 max-[450px]:w-full">
             <b class="text-text text-lg">{{ $t('extractZip') }}</b>
-            <Input
+            <UiInput
                 v-model.trim="targetFile"
                 :label="$t('targetFile')"
                 :placeholder="$t('targetFilePlaceholder')" />
-            <Button :onclick="handleGetPDF" :disabled="isLoading">
+            <UiButton :title="$t('getFile')" :disabled="isLoading" :onclick="handleGetPDF">
                 {{ $t('getFile') }}
-            </Button>
+            </UiButton>
         </div>
 
         <div class="bg-primary w-120 flex flex-col gap-6 p-6 max-[450px]:w-full">
             <b class="text-text text-lg">{{ $t('getCSV') }}</b>
 
-            <Button :onclick="handleGetCSV" :disabled="isLoading">
+            <UiButton :title="$t('getFile')" :disabled="isLoading" :onclick="handleGetCSV">
                 {{ $t('getFile') }}
-            </Button>
+            </UiButton>
         </div>
     </div>
-    <Toast />
-    <Preloader :isLoading="isLoading" />
+    <UiToast />
+    <UiPreloader :isLoading="isLoading" />
 </template>

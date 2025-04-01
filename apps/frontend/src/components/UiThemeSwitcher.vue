@@ -1,8 +1,6 @@
-<script setup>
-import Moon from '@/assets/icons/moon.svg';
-import Sun from '@/assets/icons/sun.svg';
-import Icon from '@/components/icon.vue';
-import { useTheme } from '@/composables/use-theme';
+<script setup lang="ts">
+import Icon from '@/components/UiIcon.vue';
+import { useTheme } from '@/composables/useTheme';
 
 const { theme, toggleTheme } = useTheme();
 </script>

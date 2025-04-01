@@ -1,11 +1,11 @@
 <script lang="ts">
-import Button from '@/components/button.vue';
+import UiInput from '@/components/UiButton.vue';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
     name: 'HomePaths',
-    components: { Button },
+    components: { UiInput },
 
     setup() {
         const router = useRouter();
@@ -34,10 +34,10 @@ export default defineComponent({
         </div>
 
         <div class="mt-16 flex gap-4 max-[956px]:flex-col">
-            <Button>{{ $t('accountingEntries') }}</Button>
-            <Button @click="goToOperatorsPage">{{ $t('healthOperators') }}</Button>
-            <Button>{{ $t('analytics') }}</Button>
-            <Button @click="goToExtractorPage">{{ $t('extractFiles') }}</Button>
+            <UiInput>{{ $t('accountingEntries') }}</UiInput>
+            <UiInput @click="goToOperatorsPage">{{ $t('healthOperators') }}</UiInput>
+            <UiInput>{{ $t('analytics') }}</UiInput>
+            <UiInput @click="goToExtractorPage">{{ $t('extractFiles') }}</UiInput>
         </div>
     </div>
 </template>

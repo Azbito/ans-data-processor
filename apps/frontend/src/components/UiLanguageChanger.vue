@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { Languages } from '@/i18n';
 import { cn as className } from '@/utils/cn';
 
 export default {

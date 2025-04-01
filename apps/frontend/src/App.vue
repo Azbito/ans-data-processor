@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import TopBar from '@/components/top-bar.vue';
-import ThemeProvider from '@/providers/theme-provider.vue';
-import { onMounted, ref } from 'vue';
+import TopBar from '@/components/UiTopBar.vue';
+import ThemeProvider from '@/providers/ThemeProvider.vue';
 </script>
 
 <template>

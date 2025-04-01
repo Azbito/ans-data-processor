@@ -1,7 +1,8 @@
 {
   "scripts": {
     "prepare": "husky",
-    "test:backend": "docker-compose exec -T api pytest"
+    "test:backend": "docker-compose exec -T api pytest",
+    "test:frontend": "docker-compose exec -T frontend npm run lint"
   },
   "devDependencies": {
     "husky": "^9.1.7"

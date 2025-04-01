@@ -38,4 +38,5 @@ export const pt = {
     searchOperators: 'Buscar Operadoras',
     uploadCsv: 'Importar CSV',
     errorUpload: 'Ocorreu um erro durante o envio do CSV. Por favor, tente mais tarde.',
+    fileUploaded: 'Arquivo carregado com sucesso',
 } as const;

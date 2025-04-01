@@ -1,6 +1,6 @@
 <script lang="ts">
-import LanguageChanger from '@/components/language-changer.vue';
-import ThemeSwitcher from '@/components/theme-switcher.vue';
+import LanguageChanger from '@/components/UiLanguageChanger.vue';
+import ThemeSwitcher from '@/components/UiThemeSwitcher.vue';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 

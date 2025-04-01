@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { computed, defineAsyncComponent } from 'vue';
 
 const props = defineProps({

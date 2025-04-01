@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { defineProps } from 'vue';
 
 defineProps<{ isLoading: boolean }>();
