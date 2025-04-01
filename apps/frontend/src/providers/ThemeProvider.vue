@@ -3,7 +3,7 @@ import { onMounted, provide, ref } from 'vue';
 
 const theme = ref<'light' | 'dark'>('light');
 
-const toggleTheme = (newTheme: 'light' | 'dark') => {
+const themeSetter = (newTheme: 'light' | 'dark') => {
     theme.value = newTheme;
     document.documentElement.className = newTheme;
     localStorage.setItem('theme', newTheme);
@@ -17,10 +17,8 @@ onMounted(() => {
     }
 });
 
-provide('theme', {
-    theme,
-    toggleTheme
-});
+provide('theme', theme);
+provide('themeSetter', themeSetter);
 </script>
 
 <template>

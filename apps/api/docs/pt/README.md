@@ -193,28 +193,29 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 
 #### GET /analytics/expenses/quarterly
 
-- **Descrição**: Obter as principais despesas do trimestre atual
+- **Descrição**: Obter as principais despesas do trimestre passado
+
 - **Resposta**:
   ```json
   [
     {
-      "operator": string,
+      "razao_social": string,
       "registro_ans": integer,
-      "total_expenses": float
+      "valor_despesa": float
     }
   ]
   ```
 
 #### GET /analytics/expenses/yearly
 
-- **Descrição**: Obter as principais despesas do ano atual
+- **Descrição**: Obter as principais despesas do ano passado
 - **Resposta**:
   ```json
   [
     {
-      "operator": string,
+      "razao_social": string,
       "registro_ans": integer,
-      "total_expenses": float
+      "valor_despesa": float
     }
   ]
   ```

@@ -33,7 +33,7 @@ export default {
         <button
             @click="changeLanguage('pt')"
             :title="$t('changeToPortuguese')"
-            class="hover:bg-foreground group flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 transition-all">
+            class="group flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 transition-all hover:bg-black/20">
             <img src="@/assets/icons/br.png" :alt="$t('brazilianFlag')" width="32" />
             <b
                 :class="
@@ -48,7 +48,7 @@ export default {
         <button
             @click="changeLanguage('en')"
             :title="$t('changeToEnglish')"
-            class="hover:bg-foreground group flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 transition-all">
+            class="group flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 transition-all hover:bg-black/20">
             <img src="@/assets/icons/us.png" :alt="$t('englishFlag')" width="32" />
             <b
                 :class="

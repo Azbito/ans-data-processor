@@ -1,40 +1,25 @@
-<script lang="ts">
-import LanguageChanger from '@/components/UiLanguageChanger.vue';
-import ThemeSwitcher from '@/components/UiThemeSwitcher.vue';
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import UiLanguageChanger from '@/components/UiLanguageChanger.vue';
+import UiThemeSwitcher from '@/components/UiThemeSwitcher.vue';
 import { useRouter } from 'vue-router';
 
-export default defineComponent({
-    name: 'TopBar',
-    components: {
-        ThemeSwitcher,
-        LanguageChanger,
-    },
-    setup() {
-        const router = useRouter();
+const router = useRouter();
 
-        const goHome = () => {
-            router.push('/');
-        };
-
-        return {
-            goHome,
-        };
-    },
-});
+const goHome = () => {
+    router.push('/');
+};
 </script>
 
 <template>
     <div
-        class="bg-background dark:bg-foreground fixed top-0 flex w-screen justify-between py-4 shadow">
-        <div class="flex w-fit items-center justify-center px-4 text-center">
-            <button class="cursor-pointer" @click="goHome">
-                <strong class="text-text text-2xl">ADP</strong>
-            </button>
-        </div>
-        <div class="flex items-center justify-center gap-6 pr-8">
-            <LanguageChanger />
-            <ThemeSwitcher />
+        class="bg-primary fixed top-0 flex h-16 w-full items-center justify-between px-16 shadow-lg">
+        <button class="text-xl font-bold" title="Home" @click="goHome">
+            {{ $t('home') }}
+        </button>
+
+        <div class="flex items-center gap-4">
+            <UiLanguageChanger />
+            <UiThemeSwitcher />
         </div>
     </div>
 </template>

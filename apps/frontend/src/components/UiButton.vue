@@ -1,20 +1,18 @@
 <script lang="ts" setup>
-import { defineProps, useAttrs } from 'vue';
+import { defineProps } from 'vue';
 
-interface ButtonProps {
+const props = defineProps<{
     title?: string;
     class?: string;
-}
-
-const props = defineProps<ButtonProps>();
-const attrs = useAttrs();
+    onClick?: (event: MouseEvent) => void;
+}>();
 
 const defaultStyles =
     'group text-text bg-primary hover:bg-black px-4 py-2 rounded-md transition-all cursor-pointer border-black dark:border-white border dark:hover:bg-white shadow-md';
 </script>
 
 <template>
-    <button v-bind="attrs" :class="[defaultStyles, props.class]" :title="props.title">
+    <button @click="props.onClick" :title="props.title" :class="[props.class, defaultStyles]">
         <span class="group-hover:text-primary">
             <slot></slot>
         </span>

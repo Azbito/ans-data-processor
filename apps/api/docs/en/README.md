@@ -217,7 +217,7 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
     {
       "operator": string,
       "registro_ans": integer,
-      "total_expenses": float
+      "valor_despesa": float
     }
   ]
   ```
@@ -231,7 +231,7 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
     {
       "operator": string,
       "registro_ans": integer,
-      "total_expenses": float
+      "valor_despesa": float
     }
   ]
   ```

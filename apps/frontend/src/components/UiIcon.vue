@@ -1,22 +1,20 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent } from 'vue';
 
-const props = defineProps({
-    name: {
-        type: String,
-        required: true,
-    },
-    class: {
-        type: String,
-        required: false,
-    },
-});
+interface SvgComponent {
+    template: string;
+}
 
-const icons = import.meta.glob('@/assets/icons/*.svg');
+const props = defineProps<{
+    name: string;
+    class?: string;
+}>();
+
+const icons = import.meta.glob('@/assets/icons/*.svg', { eager: true }) as Record<string, SvgComponent>;
 
 const icon = computed(() => {
     const path = `/src/assets/icons/${props.name}.svg`;
-    return icons[path] ? defineAsyncComponent(icons[path]) : null;
+    return icons[path] ? defineAsyncComponent(() => Promise.resolve(icons[path])) : null;
 });
 </script>
 

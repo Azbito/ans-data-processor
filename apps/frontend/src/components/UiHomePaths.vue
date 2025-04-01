@@ -1,11 +1,11 @@
 <script lang="ts">
-import UiInput from '@/components/UiButton.vue';
+import UiButton from '@/components/UiButton.vue';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
     name: 'HomePaths',
-    components: { UiInput },
+    components: { UiButton },
 
     setup() {
         const router = useRouter();
@@ -18,9 +18,19 @@ export default defineComponent({
             router.push('/operators');
         };
 
+        const goToAnalyticsPage = () => {
+            router.push('/analytics');
+        };
+
+        const goToAccountingEntriesPage = () => {
+            router.push('/accounting-entries');
+        };
+
         return {
             goToExtractorPage,
             goToOperatorsPage,
+            goToAnalyticsPage,
+            goToAccountingEntriesPage,
         };
     },
 });
@@ -34,10 +44,10 @@ export default defineComponent({
         </div>
 
         <div class="mt-16 flex gap-4 max-[956px]:flex-col">
-            <UiInput>{{ $t('accountingEntries') }}</UiInput>
-            <UiInput @click="goToOperatorsPage">{{ $t('healthOperators') }}</UiInput>
-            <UiInput>{{ $t('analytics') }}</UiInput>
-            <UiInput @click="goToExtractorPage">{{ $t('extractFiles') }}</UiInput>
+            <UiButton @click="goToAccountingEntriesPage">{{ $t('accountingEntries') }}</UiButton>
+            <UiButton @click="goToOperatorsPage">{{ $t('healthOperators') }}</UiButton>
+            <UiButton @click="goToAnalyticsPage">{{ $t('analytics') }}</UiButton>
+            <UiButton @click="goToExtractorPage">{{ $t('extractFiles') }}</UiButton>
         </div>
     </div>
 </template>

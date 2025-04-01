@@ -46,11 +46,13 @@
             </table>
         </div>
     </div>
+    <UiPreloader :isLoading="isLoading" />
 </template>
 
 <script lang="ts">
 import UiButton from '@/components/UiButton.vue';
 import UiInput from '@/components/UiInput.vue';
+import UiPreloader from '@/components/UiPreloader.vue';
 import { useToast } from '@/composables/useToast';
 import { getOperatorsByQueries, importOperatorCSV } from '@/services/operators';
 import { formatCNPJ } from '@/utils/formatCNPJ';
@@ -83,7 +85,7 @@ interface OperatorProps {
 const { showToast } = useToast();
 
 export default defineComponent({
-    components: { UiInput, UiButton },
+    components: { UiInput, UiButton, UiPreloader },
     setup() {
         const filters = ref({
             name: '',
@@ -94,9 +96,23 @@ export default defineComponent({
 
         const operators = ref<OperatorProps[]>([]);
         const fileInput = ref<HTMLInputElement | null>(null);
+        const isLoading = ref(false);
+
+        const executeWithLoading = async (fn: () => Promise<void>) => {
+            isLoading.value = true;
+            try {
+                await fn();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                isLoading.value = false;
+            }
+        };
 
         const fetchOperators = async () => {
-            operators.value = await getOperatorsByQueries(filters.value);
+            await executeWithLoading(async () => {
+                operators.value = await getOperatorsByQueries(filters.value);
+            });
         };
 
         const triggerFileInput = async () => {
@@ -109,17 +125,16 @@ export default defineComponent({
             const file = target.files?.[0];
             if (!file) return;
 
-            try {
+            await executeWithLoading(async () => {
                 await importOperatorCSV(file);
                 showToast({ message: 'fileUploaded', type: 'success' });
-            } catch {
-                showToast({ message: 'errorUpload', type: 'error' });
-            }
+            });
         };
 
         return {
             filters,
             operators,
+            isLoading,
             fileInput,
             fetchOperators,
             formatCNPJ,

@@ -8,6 +8,7 @@ import { translations } from './i18n';
 const storedLanguage = localStorage.getItem('language');
 
 const i18n = createI18n({
+    legacy: false,
     locale: storedLanguage || 'pt',
     messages: translations,
 });

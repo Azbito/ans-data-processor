@@ -1,4 +1,5 @@
 export const pt = {
+    home: 'ADP',
     accountingEntries: 'Lançamentos contábeis',
     accountingEntriesTitle: 'Ver lançamentos contábeis',
     healthOperators: 'Operadoras de saúde',
@@ -39,4 +40,6 @@ export const pt = {
     uploadCsv: 'Importar CSV',
     errorUpload: 'Ocorreu um erro durante o envio do CSV. Por favor, tente mais tarde.',
     fileUploaded: 'Arquivo carregado com sucesso',
+    yearly: 'Maiores despesas do ano passado',
+    quarterly: 'Maiores despesas do bimestre passado',
 } as const;
