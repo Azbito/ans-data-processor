@@ -1,6 +1,18 @@
-import './assets/main.css'
+import App from '@/app.vue';
+import { createApp } from 'vue';
+import '@/assets/styles/global.css';
+import router from '@/router';
+import { createI18n } from 'vue-i18n';
+import { translations } from './i18n';
 
-import { createApp } from 'vue'
-import App from './App.vue'
+const storedLanguage = localStorage.getItem('language');
 
-createApp(App).mount('#app')
+const i18n = createI18n({
+    locale: storedLanguage || 'pt',
+    messages: translations,
+});
+
+const app = createApp(App);
+app.use(router);
+app.use(i18n);
+app.mount('#app');

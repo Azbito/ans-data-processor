@@ -1,6 +1,7 @@
 # Documentação da API ANS Data Processor
 
 ## Visão Geral
+
 A API ANS Data Processor é uma ferramenta projetada para processar e analisar dados de saúde da Agência Nacional de Saúde Suplementar (ANS). Ela oferece endpoints para gerenciar dados contábeis, informações de operadoras, processamento de PDFs, extração de CSV e análises.
 
 ## Endpoints da API
@@ -8,6 +9,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 ### 1. Endpoints Contábeis
 
 #### GET /accounting
+
 - **Descrição**: Recuperar uma lista paginada de lançamentos contábeis
 - **Parâmetros**:
   - `limit` (int): Número de itens a retornar (padrão: 50, mínimo: 1, máximo: 1000)
@@ -30,6 +32,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```
 
 #### GET /accounting/{reg_ans}
+
 - **Descrição**: Recuperar lançamentos contábeis para uma operadora específica
 - **Parâmetros**:
   - `reg_ans` (int): Número de registro da operadora
@@ -48,6 +51,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```
 
 #### POST /accounting/import
+
 - **Descrição**: Importar dados contábeis de um arquivo CSV
 - **Corpo da Requisição**:
   - `file` (UploadFile): Arquivo CSV contendo dados contábeis
@@ -55,6 +59,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 ### 2. Endpoints de Operadoras
 
 #### GET /operators
+
 - **Descrição**: Recuperar uma lista paginada de operadoras de saúde
 - **Parâmetros**:
   - `limit` (int): Número de itens a retornar (padrão: 50, mínimo: 1, máximo: 1000)
@@ -91,6 +96,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```
 
 #### GET /operators/id/{registro_ans}
+
 - **Descrição**: Recuperar informações sobre uma operadora específica
 - **Parâmetros**:
   - `registro_ans` (int): Número de registro da operadora
@@ -105,6 +111,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```
 
 #### GET /operators/search
+
 - **Descrição**: Busca operadoras por razão social ou nome fantasia usando Levenshtein
 - **Parâmetros**:
   - `name` (str): Razão social ou nome fantasia da operadora
@@ -122,6 +129,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```
 
 #### POST /operators/import
+
 - **Descrição**: Importar dados de operadoras de um arquivo CSV
 - **Corpo da Requisição**:
   - `file` (UploadFile): Arquivo CSV contendo dados das operadoras
@@ -129,17 +137,19 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 ### 3. Endpoints de Processamento de PDF
 
 #### GET /pdf/ans
+
 - **Descrição**: Processar arquivos PDF da ANS
 - **Parâmetros**:
   - `target_url` (str): URL da ANS
 - **Resposta**:
   ```json
   {
-    "url": "https://r2.example.com/pdfs/processed/file.pdf"
+    "url": "https://r2.example.com/pdfs/processed/file.zip"
   }
   ```
 
 #### GET /pdf/scrap
+
 - **Descrição**: Processar e embutir arquivos PDF da ANS
 - **Parâmetros**:
   - `target_url` (str): URL de destino
@@ -154,22 +164,20 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 ### 4. Endpoints de Processamento de CSV
 
 #### GET /csv/extract-tables
+
 - **Descrição**: Extrair tabelas de um arquivo PDF
 - **Parâmetros**:
   - `target_file` (str): Nome do arquivo de destino
-  - `extension` (str): Extensão do arquivo
 - **Resposta**:
   ```json
   {
-    "url": "https://r2.example.com/tables.csv"
+    "url": "https://r2.example.com/tables.zip"
   }
   ```
 
 #### GET /csv/download-table
+
 - **Descrição**: Extrair tabelas de um PDF e baixar o arquivo processado
-- **Parâmetros**:
-  - `target_file` (str): Nome do arquivo de destino
-  - `extension` (str): Extensão do arquivo
 - **Resposta**:
   ```json
   {
@@ -180,6 +188,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 ### 5. Endpoints de Análise
 
 #### GET /analytics/expenses/quarterly
+
 - **Descrição**: Obter as principais despesas do trimestre atual
 - **Resposta**:
   ```json
@@ -193,6 +202,7 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
   ```
 
 #### GET /analytics/expenses/yearly
+
 - **Descrição**: Obter as principais despesas do ano atual
 - **Resposta**:
   ```json

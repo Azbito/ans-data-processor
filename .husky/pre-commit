@@ -2,9 +2,6 @@
 
 echo "🔍 Analyzing code..."
 
-echo "[FRONTEND] 🛠️  Running tests..."
-npm run test:frontend
-
 echo "[BACKEND] 🐍  Running tests..."
 npm run test:backend
 

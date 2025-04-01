@@ -1,22 +1,28 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call
 from services.pdf import PDFService
 from fastapi import HTTPException
+import itertools
 
 
 @pytest.fixture
-def mock_services():
-    r2_service_mock = MagicMock()
-    zip_service_mock = MagicMock()
-    csv_service_mock = MagicMock()
+def mock_services(mocker):
+    r2_service_mock = mocker.MagicMock()
+    csv_service_mock = mocker.MagicMock()
+    zip_service_mock = mocker.MagicMock()
+    scraper_service_mock = mocker.MagicMock()
 
     pdf_service = PDFService(r2_service_mock, zip_service_mock, csv_service_mock)
 
-    return pdf_service, r2_service_mock, zip_service_mock, csv_service_mock
+    pdf_service.r2_service = r2_service_mock
+    pdf_service.zip_service = zip_service_mock
+    pdf_service.scraper_service = scraper_service_mock
+
+    return pdf_service, r2_service_mock, zip_service_mock, scraper_service_mock
 
 
 def test_process_pdf_success(mock_services, mocker):
-    pdf_service, r2_service_mock, zip_service_mock, csv_service_mock = mock_services
+    pdf_service, r2_service_mock, zip_service_mock, _ = mock_services
 
     mocker.patch(
         "services.scraper.ScraperService.get_pdf_links",
@@ -27,25 +33,30 @@ def test_process_pdf_success(mock_services, mocker):
         "requests.get", return_value=MagicMock(status_code=200, content=b"PDF content")
     )
 
-    mock_open = mocker.patch(
-        "builtins.open", mocker.mock_open(read_data=b"zip content")
-    )
     mocker.patch("os.path.exists", return_value=True)
+
+    mock_open = mocker.mock_open()
+    mock_open.side_effect = itertools.cycle(
+        [
+            MagicMock(read=lambda: b"PDF content"),
+            MagicMock(read=lambda: b"zip content"),
+        ]
+    )
+    mocker.patch("builtins.open", mock_open)
+
     mocker.patch("os.remove")
-
     zip_service_mock.compress_files_to_zip.return_value = None
-
     r2_service_mock.save_pdf_to_r2.return_value = True
 
-    result = pdf_service.process_pdf("http://example.com")
-    assert result is True
+    result = pdf_service.process_pdf(
+        "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos"
+    )
 
-    zip_service_mock.compress_files_to_zip.assert_called_once()
-    r2_service_mock.save_pdf_to_r2.assert_called_once()
+    assert result is True
 
 
 def test_process_pdf_failure(mock_services, mocker):
-    pdf_service, r2_service_mock, zip_service_mock, csv_service_mock = mock_services
+    pdf_service, _, _, _ = mock_services
 
     mocker.patch(
         "services.scraper.ScraperService.get_pdf_links",

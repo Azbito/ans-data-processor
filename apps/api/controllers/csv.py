@@ -27,18 +27,18 @@ class CSVController:
                 status_code=500, detail=f"Error while extracting tables: {str(e)}"
             )
 
-    def download_unzipped_table(
-        self
-    ) -> JSONResponse:
+    def download_unzipped_table(self) -> JSONResponse:
         try:
             download_url = self.pdf_service.extract_tables(target_file="Anexo_I")
-   
+
             extracted_file, extract_dir, temp_zip_path = (
-                self.zip_service.download_and_extract(download_url, target_file="rol_table", extension="csv")
+                self.zip_service.download_and_extract(
+                    download_url, target_file="rol_table", extension="csv"
+                )
             )
 
             file_name = os.path.basename(extracted_file)
-            r2_path = f"csv/extracted/{file_name}"
+            r2_path = f"csv/raw/{file_name}"
 
             with open(extracted_file, "rb") as file:
                 content = file.read()

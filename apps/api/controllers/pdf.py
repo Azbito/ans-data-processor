@@ -55,7 +55,7 @@ class PDFController:
             with open(file_path, "rb") as file:
                 file_content = file.read()
 
-            extracted_file_path = f"pdfs/extracted/{target_file}"
+            extracted_file_path = f"pdfs/raw/{target_file}"
             self.r2_service.save_to_r2(file_content, extracted_file_path, extension)
 
             download_url = self.r2_service.get_file(extracted_file_path)

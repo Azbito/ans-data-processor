@@ -33,6 +33,12 @@ class PDFService:
 
                 with open(file_path, "wb") as f:
                     f.write(file_response.content)
+                    f.close()
+
+                with open(file_path, "rb") as f:
+                    print(filename)
+                    self.r2_service.save_pdf_to_r2(f.read(), f"raw/{filename}", "pdf")
+                    f.close()
 
                 files_to_zip.append((file_path, filename))
 
