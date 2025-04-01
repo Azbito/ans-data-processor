@@ -144,10 +144,14 @@ The ANS Data Processor API is a tool designed to process and analyze healthcare 
 - **Response**:
   ```json
   {
-    "registro_ans": integer,
-    "razao_social": string,
-    "cnpj": string,
-    "data_registro_ans": "YYYY-MM-DD"
+    "items": [
+        {
+          "registro_ans": integer,
+          "razao_social": string,
+          "cnpj": string,
+          "data_registro_ans": "YYYY-MM-DD"
+        }
+    ]
   }
   ```
 

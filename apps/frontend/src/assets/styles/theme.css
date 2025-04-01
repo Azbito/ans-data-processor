@@ -8,8 +8,14 @@
     --background-light: #faf0ff;
     --foreground-light: #dfd6e4;
 
+    --background-light-table-row: #eee0f5;
+    --background-dark-table-row: #ceb7d9;
+
     --background-dark: #0c050c;
     --foreground-dark: #252128;
+
+    --background-dark-light-table-row: #312531;
+    --background-dark-dark-table-row: #271d27;
 
     --disabled: #4c4c4c;
 }
@@ -19,6 +25,9 @@
     --color-secondary: var(--brand-secondary);
     --color-background: var(--background-light);
     --color-foreground: var(--foreground-light);
+    --color-table-primary: var(--background-light-table-row);
+    --color-table-secondary: var(--background-dark-table-row);
+
     --color-disabled: var(--disabled);
     --color-text: #000000;
 }
@@ -31,5 +40,8 @@
         --color-foreground: var(--foreground-dark);
         --color-text: #ffffff;
         --color-disabled: var(--disabled);
+
+        --color-table-primary: var(--background-dark-light-table-row);
+        --color-table-secondary: var(--background-dark-dark-table-row);
     }
 }

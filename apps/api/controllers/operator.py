@@ -12,19 +12,27 @@ router = APIRouter()
 
 class OperatorController:
     @staticmethod
-    def get_all_operators(limit: int = 50, cursor: Optional[str] = None) -> JSONResponse:
+    def get_all_operators(
+        limit: int = 50, cursor: Optional[str] = None
+    ) -> JSONResponse:
         try:
             operators, next_cursor = OperatorRepository.get_all(limit, cursor)
-            return JSONResponse(content={
-                "data": [
-                    {
-                        **op.dict(),
-                        'data_registro_ans': op.data_registro_ans.isoformat() if op.data_registro_ans else None
-                    } 
-                for op in operators
-            ],
-                "next_cursor": next_cursor
-            })
+            return JSONResponse(
+                content={
+                    "data": [
+                        {
+                            **op.dict(),
+                            "data_registro_ans": (
+                                op.data_registro_ans.isoformat()
+                                if op.data_registro_ans
+                                else None
+                            ),
+                        }
+                        for op in operators
+                    ],
+                    "next_cursor": next_cursor,
+                }
+            )
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
@@ -34,10 +42,16 @@ class OperatorController:
             operator = OperatorRepository.get_by_id(registro_ans)
             if not operator:
                 raise HTTPException(status_code=404, detail="Not found")
-            return JSONResponse(content={
-                **operator.dict(),
-                'data_registro_ans': operator.data_registro_ans.isoformat() if operator.data_registro_ans else None
-            })
+            return JSONResponse(
+                content={
+                    **operator.dict(),
+                    "data_registro_ans": (
+                        operator.data_registro_ans.isoformat()
+                        if operator.data_registro_ans
+                        else None
+                    ),
+                }
+            )
         except HTTPException as he:
             raise he
         except Exception as e:
@@ -53,7 +67,7 @@ class OperatorController:
                 sep=";",
                 encoding="utf-8",
                 decimal=",",
-                parse_dates=["Data_Registro_ANS"]
+                parse_dates=["Data_Registro_ANS"],
             )
 
             column_mapping = {
@@ -76,30 +90,34 @@ class OperatorController:
                 "Representante": "representante",
                 "Cargo_Representante": "cargo_representante",
                 "Regiao_de_Comercializacao": "regiao_de_comercializacao",
-                "Data_Registro_ANS": "data_registro_ans"
+                "Data_Registro_ANS": "data_registro_ans",
             }
             data_frame = data_frame.rename(columns=column_mapping)
 
             data_frame = data_frame.fillna("")
-            
-            data_frame['cnpj'] = data_frame['cnpj'].astype(str).str.strip()
-            
-            for field in ['ddd', 'telefone', 'fax']:
-                data_frame[field] = pd.to_numeric(data_frame[field], errors='coerce').fillna(0).astype(int)
-            
-            data_frame['numero'] = data_frame['numero'].astype(str)
-            
-            data_frame['regiao_de_comercializacao'] = (
-                data_frame['regiao_de_comercializacao']
-                .replace('', '0')
-                .astype(float)   
-                .astype(int)     
+
+            data_frame["cnpj"] = data_frame["cnpj"].astype(str).str.strip()
+
+            for field in ["ddd", "telefone", "fax"]:
+                data_frame[field] = (
+                    pd.to_numeric(data_frame[field], errors="coerce")
+                    .fillna(0)
+                    .astype(int)
+                )
+
+            data_frame["numero"] = data_frame["numero"].astype(str)
+
+            data_frame["regiao_de_comercializacao"] = (
+                data_frame["regiao_de_comercializacao"]
+                .replace("", "0")
+                .astype(float)
+                .astype(int)
             )
 
             operators = []
-            for record in data_frame.to_dict('records'):
+            for record in data_frame.to_dict("records"):
                 try:
-                    record['cnpj'] = str(record['cnpj'])
+                    record["cnpj"] = str(record["cnpj"])
                     operator = Operator(**record)
                     operators.append(operator)
                 except Exception as e:
@@ -109,24 +127,39 @@ class OperatorController:
             inserted = OperatorRepository.bulk_insert(operators)
 
             return JSONResponse(
-                content={"message": f"Successfully imported {inserted} operator records"},
-                status_code=200
+                content={
+                    "message": f"Successfully imported {inserted} operator records"
+                },
+                status_code=200,
             )
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
-
     @staticmethod
-    async def search_operators(name: Optional[str], city: Optional[str], state: Optional[str], modality: Optional[str]) -> JSONResponse:
+    async def search_operators(
+        name: Optional[str],
+        city: Optional[str],
+        state: Optional[str],
+        modality: Optional[str],
+    ) -> JSONResponse:
         try:
-            results = await OperatorRepository.search_operators(name, city, state, modality)
-            return JSONResponse(content={
-                "data": [
-                    {
-                        **op.dict(),
-                        'data_registro_ans': op.data_registro_ans.isoformat() if op.data_registro_ans else None
-                    } 
-                for op in results
-            ]})
+            results = await OperatorRepository.search_operators(
+                name, city, state, modality
+            )
+            return JSONResponse(
+                content={
+                    "items": [
+                        {
+                            **op.dict(),
+                            "data_registro_ans": (
+                                op.data_registro_ans.isoformat()
+                                if op.data_registro_ans
+                                else None
+                            ),
+                        }
+                        for op in results
+                    ]
+                }
+            )
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

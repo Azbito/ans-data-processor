@@ -121,10 +121,14 @@ A API ANS Data Processor é uma ferramenta projetada para processar e analisar d
 - **Resposta**:
   ```json
   {
-    "registro_ans": integer,
-    "razao_social": string,
-    "cnpj": string,
-    "data_registro_ans": "YYYY-MM-DD"
+    "items": [
+        {
+          "registro_ans": integer,
+          "razao_social": string,
+          "cnpj": string,
+          "data_registro_ans": "YYYY-MM-DD"
+        }
+    ]
   }
   ```
 

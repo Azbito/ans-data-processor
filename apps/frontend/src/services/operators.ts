@@ -1,5 +1,22 @@
 import { API } from '@/libs/api';
 
+export async function importOperatorCSV(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await API.post('/operators/import', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return response;
+    } catch (error) {
+        console.error('Erro ao enviar CSV:', error);
+        throw error;
+    }
+}
 export async function getOperatorsByQueries({
     name,
     city,
@@ -20,7 +37,5 @@ export async function getOperatorsByQueries({
 
     const { data } = await API.get('/operators/search', { params });
 
-    const { data: res } = data;
-
-    return res;
+    return data.items;
 }

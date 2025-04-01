@@ -36,4 +36,6 @@ export const pt = {
     cnpj: 'CNPJ',
     ansDateRegister: 'Data Registro ANS',
     searchOperators: 'Buscar Operadoras',
+    uploadCsv: 'Importar CSV',
+    errorUpload: 'Ocorreu um erro durante o envio do CSV. Por favor, tente mais tarde.',
 } as const;
