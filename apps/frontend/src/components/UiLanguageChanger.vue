@@ -38,7 +38,7 @@ export default {
             <b
                 :class="
                     cn(
-                        'group-hover:text-orange-500',
+                        'hidden group-hover:text-orange-500 sm:inline',
                         currentLanguage === 'pt' ? 'text-text' : 'text-disabled',
                     )
                 ">
@@ -53,7 +53,7 @@ export default {
             <b
                 :class="
                     cn(
-                        'group-hover:text-orange-500',
+                        'hidden group-hover:text-orange-500 sm:inline',
                         currentLanguage === 'en' ? 'text-text' : 'text-disabled',
                     )
                 ">

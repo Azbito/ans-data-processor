@@ -11,13 +11,13 @@
             <UiButton class="w-100 max-[1020px]:w-full" type="submit">{{ $t('search') }}</UiButton>
         </form>
 
-        <UiButton class="mt-4 w-full" @click="triggerFileInput">{{ $t('uploadCsv') }}</UiButton>
-        <input
-            type="file"
-            ref="fileInput"
-            @change="handleFileUpload"
-            accept=".csv"
-            class="hidden" />
+        <UiButton class="mt-4 w-full" @click="showUploadModal = true">{{
+            $t('uploadCsv')
+        }}</UiButton>
+
+        <UiModal v-model="showUploadModal" :title="$t('uploadCsv')">
+            <UiFileUpload accept=".csv" :label="$t('uploadCsv')" :on-upload="handleFileUpload" />
+        </UiModal>
 
         <div class="mt-6 max-w-full !overflow-x-auto">
             <table v-if="operators.length" class="rounded-lg shadow-lg max-[765px]:w-max">
@@ -51,13 +51,15 @@
 
 <script lang="ts">
 import UiButton from '@/components/UiButton.vue';
+import UiFileUpload from '@/components/UiFileUpload.vue';
 import UiInput from '@/components/UiInput.vue';
+import UiModal from '@/components/UiModal.vue';
 import UiPreloader from '@/components/UiPreloader.vue';
 import { useToast } from '@/composables/useToast';
 import { getOperatorsByQueries, importOperatorCSV } from '@/services/operators';
 import { formatCNPJ } from '@/utils/formatCNPJ';
 import { formatDate } from '@/utils/formatDate';
-import { defineComponent, nextTick, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 interface OperatorProps {
     registro_ans: number;
@@ -85,7 +87,7 @@ interface OperatorProps {
 const { showToast } = useToast();
 
 export default defineComponent({
-    components: { UiInput, UiButton, UiPreloader },
+    components: { UiInput, UiButton, UiPreloader, UiFileUpload, UiModal },
     setup() {
         const filters = ref({
             name: '',
@@ -95,8 +97,8 @@ export default defineComponent({
         });
 
         const operators = ref<OperatorProps[]>([]);
-        const fileInput = ref<HTMLInputElement | null>(null);
         const isLoading = ref(false);
+        const showUploadModal = ref(false);
 
         const executeWithLoading = async (fn: () => Promise<void>) => {
             isLoading.value = true;
@@ -115,16 +117,7 @@ export default defineComponent({
             });
         };
 
-        const triggerFileInput = async () => {
-            await nextTick();
-            fileInput.value?.click();
-        };
-
-        const handleFileUpload = async (event: Event) => {
-            const target = event.target as HTMLInputElement;
-            const file = target.files?.[0];
-            if (!file) return;
-
+        const handleFileUpload = async (file: File) => {
             await executeWithLoading(async () => {
                 await importOperatorCSV(file);
                 showToast({ message: 'fileUploaded', type: 'success' });
@@ -135,11 +128,10 @@ export default defineComponent({
             filters,
             operators,
             isLoading,
-            fileInput,
+            showUploadModal,
             fetchOperators,
             formatCNPJ,
             formatDate,
-            triggerFileInput,
             handleFileUpload,
         };
     },

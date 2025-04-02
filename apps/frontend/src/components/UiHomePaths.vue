@@ -23,7 +23,7 @@ export default defineComponent({
         };
 
         const goToAccountingEntriesPage = () => {
-            router.push('/accounting-entries');
+            router.push('/accounting');
         };
 
         return {

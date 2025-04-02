@@ -42,4 +42,13 @@ export const pt = {
     fileUploaded: 'Arquivo carregado com sucesso',
     yearly: 'Maiores despesas do ano passado',
     quarterly: 'Maiores despesas do bimestre passado',
+    recentEntries: 'Lançamentos recentes',
+    dragAndDrop: 'Arraste e solte arquivos aqui',
+    orClickToUpload: 'ou clique para selecionar',
+    selectCsvFile: 'Selecionar arquivo CSV',
+    uploadFailed: 'Falha ao fazer upload do arquivo',
+    searchOperator: 'Digite o número do registro ANS',
+    importData: 'Importar dados',
+    dropHere: 'Solte aqui',
+    uploading: 'Enviando',
 } as const;

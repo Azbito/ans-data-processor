@@ -13,7 +13,7 @@ def test_get_last_period_range_quarterly_in_q1(mock_datetime_now):
     start_date, end_date = get_last_period_range(
         "quarterly", mock_datetime_now.now.return_value
     )
-    print(start_date, end_date)
+
     assert start_date == datetime(2024, 10, 1)
     assert end_date == datetime(2024, 12, 31)
 

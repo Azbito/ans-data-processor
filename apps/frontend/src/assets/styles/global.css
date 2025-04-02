@@ -42,6 +42,10 @@ body {
     animation: spin 1s linear infinite;
 }
 
+.backdrop-blur {
+    backdrop-filter: blur(1rem);
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

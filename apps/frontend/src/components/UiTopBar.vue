@@ -12,8 +12,8 @@ const goHome = () => {
 
 <template>
     <div
-        class="bg-primary fixed top-0 flex h-16 w-full items-center justify-between px-16 shadow-lg">
-        <button class="text-xl font-bold" title="Home" @click="goHome">
+        class="bg-primary dark:bg-foreground fixed top-0 z-50 flex h-16 w-full items-center justify-between px-16 shadow-lg">
+        <button class="text-text text-xl font-bold" title="Home" @click="goHome">
             {{ $t('home') }}
         </button>
 
