@@ -1,0 +1,139 @@
+{
+    "info": {
+        "_postman_id": "fd7bc64e-5ad1-4302-adf3-340e7f09fe82",
+        "name": "Operators API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "38663789"
+    },
+    "item": [
+        {
+            "name": "Import Operators CSV",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "type": "file",
+                            "description": "CSV file containing operator data"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:8000/operators/import",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "operators",
+                        "import"
+                    ]
+                },
+                "description": "Upload a CSV file to import operator data"
+            }
+        },
+        {
+            "name": "Search Operators",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/operators/search",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "operators",
+                        "search"
+                    ],
+                    "query": [
+                        {
+                            "key": "name",
+                            "value": "",
+                            "description": "Search by razao_social or nome_fantasia"
+                        },
+                        {
+                            "key": "city",
+                            "value": "",
+                            "description": "Search by cidade"
+                        },
+                        {
+                            "key": "state",
+                            "value": "",
+                            "description": "Search by UF"
+                        },
+                        {
+                            "key": "modality",
+                            "value": "",
+                            "description": "Search by modalidade"
+                        }
+                    ]
+                },
+                "description": "Search for operators using various filters"
+            }
+        },
+        {
+            "name": "Get All Operators",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/operators",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "operators"
+                    ],
+                    "query": [
+                        {
+                            "key": "limit",
+                            "value": "50",
+                            "description": "Number of items to return (1-1000)"
+                        },
+                        {
+                            "key": "cursor",
+                            "value": "",
+                            "description": "Cursor for pagination"
+                        }
+                    ]
+                },
+                "description": "Get a list of all operators with pagination"
+            }
+        },
+        {
+            "name": "Get Operator by ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/operators/id/{{registro_ans}}",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "operators",
+                        "id",
+                        "{{registro_ans}}"
+                    ]
+                },
+                "description": "Get a specific operator by registro_ans"
+            }
+        }
+    ]
+}
