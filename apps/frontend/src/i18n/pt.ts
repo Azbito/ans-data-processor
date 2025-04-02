@@ -51,4 +51,7 @@ export const pt = {
     importData: 'Importar dados',
     dropHere: 'Solte aqui',
     uploading: 'Enviando',
+    initialBalance: 'Saldo Inicial',
+    finalBalance: 'Saldo Final',
+    account: 'Conta'
 } as const;

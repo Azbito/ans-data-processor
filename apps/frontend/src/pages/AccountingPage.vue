@@ -12,35 +12,31 @@
                         :key="index"
                         class="dark:bg-primary w-full rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-[1.02]">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-xl font-semibold">{{ formatDate(entry.data) }}</h3>
+                            <h3 class="text-text text-xl font-semibold">{{ formatDate(entry.data) }}</h3>
                         </div>
 
                         <div class="mt-4 space-y-3">
                             <div class="flex items-center gap-2">
-                                <UiIcon name="operator" class="text-text" />
                                 <span class="text-text">ANS: {{ entry.reg_ans }}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <UiIcon name="account" class="text-text" />
                                 <span class="text-text"
-                                    >Account: {{ entry.cd_conta_contabil }}</span
+                                    >{{ $t('account') }} {{ entry.cd_conta_contabil }}</span
                                 >
                             </div>
                             <div class="flex items-center gap-2">
-                                <UiIcon name="description" class="text-text" />
                                 <span class="text-text">{{ entry.descricao }}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <UiIcon name="initial" class="text-text" />
                                 <span class="text-text"
-                                    >Initial Balance:
+                                    >{{ $t('initialBalance') }}
                                     {{ formatToBRL(entry.vl_saldo_inicial) }}</span
                                 >
                             </div>
                             <div class="flex items-center gap-2">
-                                <UiIcon name="final" class="text-text" />
                                 <span class="text-text"
-                                    >Final Balance: {{ formatToBRL(entry.vl_saldo_final) }}</span
+                                    >{{ $t('finalBalance') }}
+                                    {{ formatToBRL(entry.vl_saldo_final) }}</span
                                 >
                             </div>
                         </div>

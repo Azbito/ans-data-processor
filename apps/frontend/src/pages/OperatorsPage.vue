@@ -19,8 +19,8 @@
             <UiFileUpload accept=".csv" :label="$t('uploadCsv')" :on-upload="handleFileUpload" />
         </UiModal>
 
-        <div class="mt-6 max-w-full !overflow-x-auto">
-            <table v-if="operators.length" class="rounded-lg shadow-lg max-[765px]:w-max">
+        <div class="mt-6 min-[1020px]:w-screen max-w-full !overflow-x-auto">
+            <table v-if="operators.length" class="rounded-lg min-[1020px]:w-full shadow-lg max-[765px]:w-max">
                 <thead>
                     <tr class="bg-primary text-text text-left">
                         <th class="p-4">{{ $t('ansRegister') }}</th>
